@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Fast, private, browser-based file zipper." />
+  <title>File Zipper — Fast & Private</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="logo">ZIP</span><div><strong>File Zipper</strong><small>Client-side compression</small></div></div>
+      <button id="themeBtn" class="icon-btn" type="button" aria-label="Toggle theme">◐</button>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">PRIVATE · LOCAL · SIMPLE</div>
+      <h1>Zip files without uploading them.</h1>
+      <p>Your files stay in your browser. Select one or more files, choose a compression level, and download a ZIP instantly.</p>
+    </section>
+
+    <section class="card" id="dropZone" tabindex="0" aria-label="File drop zone">
+      <input id="fileInput" type="file" multiple hidden />
+      <div class="upload-icon">↥</div>
+      <h2>Drop files here</h2>
+      <p>or choose files from your device</p>
+      <button id="browseBtn" class="primary" type="button">Choose files</button>
+      <div class="hint">No server upload · Works offline after loading</div>
+    </section>
+
+    <section class="controls card">
+      <div class="control-head"><div><h2>Compression</h2><p id="levelText">Balanced compression for speed and size</p></div><select id="level"><option value="1">Fast</option><option value="6" selected>Balanced</option><option value="9">Maximum</option></select></div>
+      <div class="range-wrap"><input id="levelRange" type="range" min="1" max="9" value="6" /><div class="ticks"><span>Fast</span><span>Balanced</span><span>Max</span></div></div>
+    </section>
+
+    <section id="filesCard" class="card hidden">
+      <div class="section-title"><h2>Selected files</h2><button id="clearBtn" class="text-btn" type="button">Clear</button></div>
+      <div id="fileList" class="file-list"></div>
+      <div class="summary"><span id="summaryText">0 files</span><strong id="sizeText">0 B</strong></div>
+      <button id="zipBtn" class="primary full" type="button">Create ZIP</button>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="features">
+      <article><span>🔒</span><h3>Private</h3><p>Files never leave your device.</p></article>
+      <article><span>⚡</span><h3>Fast</h3><p>Compression happens locally.</p></article>
+      <article><span>📦</span><h3>Portable</h3><p>Produces standard ZIP archives.</p></article>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
