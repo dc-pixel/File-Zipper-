@@ -1,61 +1,40 @@
-cpp-zipper
-===========
+# File Zipper
 
-A single file C++ header-only minizip wrapper library
+A lightweight, header-only C++ ZIP/UNZIP wrapper plus a polished browser demo for creating ZIP archives locally.
 
-This code is based on 'Making MiniZip Easier to Use' by John Schember.
-https://nachtimwald.com/2019/09/08/making-minizip-easier-to-use/
+## What was improved
 
-Example
--------
+- Added a responsive Vercel-ready web interface under `web/`.
+- Added drag-and-drop and multi-file selection.
+- Added Fast, Balanced, and Maximum compression controls.
+- Added client-side ZIP creation with no application server upload.
+- Added file removal, clear-all, size summaries, status feedback, and light/dark mode.
+- Added security-oriented response headers through `vercel.json`.
+- Preserved the original C++ header-only library and example.
 
-```cpp
-#include <filesystem>
-#include <iostream>
+## Run the web demo locally
 
-#include "zipper.h"
+Because the demo is a static site, serve the `web` directory with any static HTTP server:
 
-namespace fs = std::filesystem;
-
-int main() {
-  {
-    zipper::Zip zip("test_copy.zip");
-
-    zipper::enumerate("test.zip", [&zip](auto &unzip) {
-      if (unzip.is_dir()) {
-        zip.add_dir(unzip.file_path());
-      } else {
-        std::string buf;
-        if (unzip.read(buf)) {
-          zip.add_file(unzip.file_path(), buf);
-        }
-      }
-    });
-  }
-
-  {
-    zipper::UnZip zip0("test.zip");
-    zipper::UnZip zip1("test_copy.zip");
-
-    do {
-      assert(zip0.is_dir() == zip1.is_dir());
-      assert(zip0.is_file() == zip1.is_file());
-      assert(zip0.file_path() == zip1.file_path());
-      assert(zip0.file_size() == zip1.file_size());
-
-      if (zip0.is_file()) {
-        std::string buf0, buf1;
-        assert(zip0.read(buf0) == zip1.read(buf1));
-        assert(buf0 == buf1);
-      }
-    } while (zip0.next() && zip1.next());
-  }
-
-  return 0;
-}
+```bash
+cd web
+python -m http.server 8000
 ```
 
-License
--------
+Then open `http://localhost:8000`.
 
-MIT license (© 2021 Yuji Hirose)
+## C++ library
+
+The original library remains header-only and is based on MiniZip. It provides `zipper::Zip`, `zipper::UnZip`, and enumeration helpers. See `example/example.cpp` for usage.
+
+## Deployment
+
+The repository includes `vercel.json` and the web entrypoint lives in `web/`. In Vercel, set the project root to `web` (or deploy the repository as a static project using `web` as the output directory).
+
+## Privacy
+
+The demo performs file reading and ZIP generation in the browser. Files are not intentionally sent to an application backend.
+
+## License
+
+MIT License (© 2021 Yuji Hirose).
